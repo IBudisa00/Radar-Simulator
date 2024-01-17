@@ -9,9 +9,12 @@ class radar{
         uint32_t range_radius;
         uint32_t radar_x;
         uint32_t radar_y;
+        bool transition;
     public:
     radar();
     void updateAngles();
     bool checkIfInRange(uint32_t x_cord, uint32_t y_cord);
+    bool checkIfAngleSuits(uint32_t x_cord, uint32_t y_cord);
     void updateMap(area area[][AREA_SIZE]);
+    double calcHypotenuse(int opposite, int adjacent);
 };
