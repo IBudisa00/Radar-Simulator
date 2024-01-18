@@ -15,7 +15,9 @@ void startSimulator(area area[][AREA_SIZE]){
     int option;
     int running = 1;
     int coordinateX, coordinateY;
-    int angle;
+    int trajectory;
+
+    //set radar position
 
     std::cout << "Welcome to radar simulation. Pick option you want to procede with.\n";
 
@@ -26,7 +28,8 @@ void startSimulator(area area[][AREA_SIZE]){
         switch(option){
             case 1:
                 //printingScannedArray
-                printArea(area, radar);
+                printArea(area, radar, trajectory);
+                //running = 0;
                 break;
             case 2:
                 //inputObject
@@ -36,7 +39,7 @@ void startSimulator(area area[][AREA_SIZE]){
                 std::cout << "\nEnter Y coordinate: ";
                 std::cin >> coordinateY;
                 std::cout << "\nEnter angle of trajectory: ";
-                std::cin >> angle;
+                std::cin >> trajectory;
 
                 area[coordinateX][coordinateY].setProjectilePresent(true);
                 break;
@@ -50,11 +53,68 @@ void startSimulator(area area[][AREA_SIZE]){
     }
 }
 
-void printArea(area area[][AREA_SIZE], radar radar){
+void printArea(area area[][AREA_SIZE], radar radar, int trajectory){
     int n = 15;
     while(n)
     {
         radar.updateMap(area);
+        radar.updateAngles();
+
+        for(uint32_t i = 0; i < AREA_SIZE; i++){
+            for(uint32_t j = 0; j < AREA_SIZE; j++){
+                if(area[i][j].getProjectilePresentValue())
+                {
+                    updateProjectilePosition(area, i, j, trajectory);
+                    break;
+                }
+            }
+        }
         n++;
+    }
+}
+
+void updateProjectilePosition(area area[][AREA_SIZE], int x_cord, int y_cord, int trajectory){
+    int newPosition;
+    newPosition = area[x_cord][y_cord].calcNewProjectilePosition(trajectory);
+
+    if(newPosition == north)
+    {
+        area[x_cord][y_cord].setProjectilePresent(false);
+        area[x_cord-1][y_cord].setProjectilePresent(true);
+    }
+    else if(newPosition == northEast)
+    {
+        area[x_cord][y_cord].setProjectilePresent(false);
+        area[x_cord-1][y_cord+1].setProjectilePresent(true);
+    }
+    else if(newPosition == east)
+    {
+        area[x_cord][y_cord].setProjectilePresent(false);
+        area[x_cord][y_cord+1].setProjectilePresent(true);
+    }
+    else if(newPosition == southEast)
+    {
+        area[x_cord][y_cord].setProjectilePresent(false);
+        area[x_cord+1][y_cord+1].setProjectilePresent(true);
+    }
+    else if(newPosition == south)
+    {
+        area[x_cord][y_cord].setProjectilePresent(false);
+        area[x_cord+1][y_cord].setProjectilePresent(true);
+    }
+    else if(newPosition == southWest)
+    {
+        area[x_cord][y_cord].setProjectilePresent(false);
+        area[x_cord+1][y_cord-1].setProjectilePresent(true);
+    }
+    else if(newPosition == west)
+    {
+        area[x_cord][y_cord].setProjectilePresent(false);
+        area[x_cord][y_cord-1].setProjectilePresent(true);
+    }
+    else
+    {
+        area[x_cord][y_cord].setProjectilePresent(false);
+        area[x_cord-1][y_cord-1].setProjectilePresent(true);
     }
 }

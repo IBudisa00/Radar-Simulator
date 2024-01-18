@@ -128,15 +128,17 @@ bool radar::checkIfAngleSuits(uint32_t x_cord, uint32_t y_cord){
 }
 
 void radar::updateMap(area area[][AREA_SIZE]){
-    //update projectile position
     for(uint32_t i = 0; i < AREA_SIZE; i++){
         for(uint32_t j = 0; j < AREA_SIZE; j++){
             if(checkIfAngleSuits(i,j))
             {
                 if(checkIfInRange(i,j))
-                    std::cout << " O ";
-                else
-                    std::cout << "  ";
+                {
+                    if(area[i][j].getProjectilePresentValue())
+                        std::cout << " O ";
+                    else
+                        std::cout << "  ";
+                }
             }
             else
                 std::cout << "  ";
