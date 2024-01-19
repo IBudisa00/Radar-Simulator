@@ -3,7 +3,8 @@
 #define AREA_SIZE 15
 
 enum nextProjectilePosition{
-    north = 1,
+    noDirectionSet,
+    north,
     northEast,
     east,
     southEast,
@@ -19,12 +20,17 @@ class area{
         uint32_t y;
         bool projectile_present;
         bool radarLocation;
+        uint32_t changeDirectionTo;
+        uint32_t weight;
     public:
-        area(uint32_t x_cord, uint32_t y_cord);
+        area();
         void setProjectilePresent(bool value);
         void setRadarLocation();
         bool getProjectilePresentValue();
         int calcNewProjectilePosition(int trajectory);
-        uint32_t getXcord();
-        uint32_t getYcord();
+        void setChangeDirectionTo(uint32_t value);
+        uint32_t getChangeDirectionTo();
+        void setWeight(uint32_t value);
+        uint32_t getWeight();
+        void updateArea(int weightValue, bool projectileValue);
 };
