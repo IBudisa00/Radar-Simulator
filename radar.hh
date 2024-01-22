@@ -16,5 +16,4 @@ class radar{
     bool checkIfInRange(uint32_t x_cord, uint32_t y_cord);
     bool checkIfAngleSuits(uint32_t x_cord, uint32_t y_cord);
     void updateMap(area area[][AREA_SIZE]);
-    double calcHypotenuse(int opposite, int adjacent);
 };

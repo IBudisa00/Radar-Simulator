@@ -82,42 +82,42 @@ void updateProjectilePosition(area area[][AREA_SIZE], int x_cord, int y_cord, in
 
     if(newPosition == north)
     {
-        area[x_cord][y_cord].updateArea(0, false);
         area[x_cord-1][y_cord].updateArea(area[x_cord][y_cord].getWeight() - 1, true);
+        area[x_cord][y_cord].updateArea(0, false);
     }
     else if(newPosition == northEast)
     {
-        area[x_cord][y_cord].updateArea(0, false);
         area[x_cord-1][y_cord+1].updateArea(area[x_cord][y_cord].getWeight() - 1, true);
+        area[x_cord][y_cord].updateArea(0, false);
     }
     else if(newPosition == east)
     {
-        area[x_cord][y_cord].updateArea(0, false);
         area[x_cord][y_cord+1].updateArea(area[x_cord][y_cord].getWeight() - 1, true);
+        area[x_cord][y_cord].updateArea(0, false);
     }
     else if(newPosition == southEast)
     {
-        area[x_cord][y_cord].updateArea(0, false);
         area[x_cord+1][y_cord+1].updateArea(area[x_cord][y_cord].getWeight() - 1, true);
+        area[x_cord][y_cord].updateArea(0, false);
     }
     else if(newPosition == south)
     {
-        area[x_cord][y_cord].updateArea(0, false);
         area[x_cord+1][y_cord].updateArea(area[x_cord][y_cord].getWeight() - 1, true);
+        area[x_cord][y_cord].updateArea(0, false);
     }
     else if(newPosition == southWest)
     {
-        area[x_cord][y_cord].updateArea(0, false);
         area[x_cord+1][y_cord-1].updateArea(area[x_cord][y_cord].getWeight() - 1, true);
+        area[x_cord][y_cord].updateArea(0, false);
     }
     else if(newPosition == west)
     {
-        area[x_cord][y_cord].updateArea(0, false);
         area[x_cord][y_cord-1].updateArea(area[x_cord][y_cord].getWeight() - 1, true);
+        area[x_cord][y_cord].updateArea(0, false);
     }
     else
     {
-        area[x_cord][y_cord].updateArea(0, false);
         area[x_cord-1][y_cord-1].updateArea(area[x_cord][y_cord].getWeight() - 1, true);
+        area[x_cord][y_cord].updateArea(0, false);
     }
 }

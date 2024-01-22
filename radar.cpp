@@ -33,26 +33,13 @@ void radar::updateAngles(){
 }
 
 bool radar::checkIfInRange(uint32_t x_cord, uint32_t y_cord){
-    if(y_cord >= radar_y)
-    {   //quadrant1 and quadrant4
-        if((sqrt(pow(abs(x_cord-radar_x), 2) + pow(abs(y_cord-radar_y), 2)) <= range_radius)||(sqrt(pow(abs(x_cord-radar_x), 2) + pow(abs(y_cord-radar_y) - 1, 2)) <= range_radius))
-            return true;
-        else
-            return false;
-    }
+    if(sqrt(pow(abs(x_cord-radar_x), 2) + pow(abs(y_cord-radar_y), 2)) <= range_radius)
+        return true;
     else
-    {
-        //quadrant2 and quadrant3
-        if((sqrt(pow(abs(x_cord-radar_x), 2) + pow(abs(y_cord-radar_y), 2)) <= range_radius)||(sqrt(pow(abs(x_cord-radar_x), 2) + pow(abs(y_cord-radar_y) + 1, 2)) <= range_radius))
-            return true;
-        else
-            return false;
-    }
+        return false;
 }
 
 bool radar::checkIfAngleSuits(uint32_t x_cord, uint32_t y_cord){
-    //check quadrant
-    double hypotenuse;
     int adjacent;
     int opposite;
     double calc_angle;
@@ -62,32 +49,28 @@ bool radar::checkIfAngleSuits(uint32_t x_cord, uint32_t y_cord){
     {
         opposite = abs(x_cord-radar_x);
         adjacent = abs(y_cord-radar_y);
-        hypotenuse = calcHypotenuse(opposite, adjacent);
-        calc_angle = 270.0 + 1/cos(adjacent/hypotenuse);
+        calc_angle = 270.0 + atan(opposite/adjacent);
     }
     //quadrant1
     else if(radar_x > x_cord && radar_y < y_cord)
     {
         opposite = abs(x_cord-radar_x);
         adjacent = abs(y_cord-radar_y);
-        hypotenuse = calcHypotenuse(opposite, adjacent);
-        calc_angle = 90.0 - 1/cos(adjacent/hypotenuse);
+        calc_angle = 90.0 - atan(opposite/adjacent);
     }
     //quadrant4
     else if(radar_x < x_cord && radar_y < y_cord)
     {
         opposite = abs(x_cord-radar_x);
         adjacent = abs(y_cord-radar_y);
-        hypotenuse = calcHypotenuse(opposite, adjacent);
-        calc_angle = 90.0 + 1/cos(adjacent/hypotenuse);
+        calc_angle = 90.0 + atan(opposite/adjacent);
     }
     //quadrant3
     else if(radar_x < x_cord && radar_y > y_cord)
     {
         opposite = abs(x_cord-radar_x);
         adjacent = abs(y_cord-radar_y);
-        hypotenuse = calcHypotenuse(opposite, adjacent);
-        calc_angle = 270.0 - 1/cos(adjacent/hypotenuse);
+        calc_angle = 270.0 - atan(opposite/adjacent);
     }
     else if(radar_x == x_cord)
     {
@@ -145,8 +128,4 @@ void radar::updateMap(area area[][AREA_SIZE]){
         }
         std::cout<<"\n";
     }
-}
-
-double radar::calcHypotenuse(int opposite, int adjacent){
-    return sqrt(pow(adjacent, 2) + pow(opposite, 2));
 }
