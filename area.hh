@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <cstdint>
 #define AREA_SIZE 15

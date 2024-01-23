@@ -3,32 +3,33 @@
 
 radar::radar(){
     angle_range = 120;
-    range_radius = 6;
+    range_radius = 5;
     left_range_boundary = 300;
     right_range_boundary = 60;
+    angleChange = 30;
     transition = true;
 }
 
 void radar::updateAngles(){
-    if(left_range_boundary + 60 > 360)
+    if(left_range_boundary + angleChange > 360)
     {
-        left_range_boundary = left_range_boundary + 60 - 360;
-        right_range_boundary = left_range_boundary + 120;
+        left_range_boundary = left_range_boundary + angleChange - 360;
+        right_range_boundary = left_range_boundary + angle_range;
     }
-    else if(left_range_boundary + 60 == 360)
+    else if(left_range_boundary + angleChange == 360)
     {
         left_range_boundary = 0;
-        right_range_boundary = left_range_boundary + 120;
+        right_range_boundary = left_range_boundary + angle_range;
     }
     else
     {
-        left_range_boundary = left_range_boundary + 60;
-        if(right_range_boundary + 120 > 360)
+        left_range_boundary = left_range_boundary + angleChange;
+        if(right_range_boundary + angle_range > 360)
             right_range_boundary = angle_range - (360 - left_range_boundary);
-        else if(right_range_boundary + 120 == 360)
+        else if(right_range_boundary + angle_range == 360)
             right_range_boundary = 0;
         else
-            right_range_boundary = left_range_boundary + 120;
+            right_range_boundary = left_range_boundary + angle_range;
     }
 }
 
@@ -118,13 +119,13 @@ void radar::updateMap(area area[][AREA_SIZE]){
                 if(checkIfInRange(i,j))
                 {
                     if(area[i][j].getProjectilePresentValue())
-                        std::cout << " O ";
+                        std::cout << GREEN << RED << " O " << RESET;
                     else
-                        std::cout << "  ";
+                        std::cout << GREEN << " | " << RESET;
                 }
             }
             else
-                std::cout << "  ";
+                std::cout << " | ";
         }
         std::cout<<"\n";
     }

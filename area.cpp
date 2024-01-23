@@ -20,7 +20,7 @@ bool area::getProjectilePresentValue(){
 }
 
 int area::calcNewProjectilePosition(int trajectory){
-    if(trajectory <= 30 || trajectory >= 330)
+    if((trajectory <= 30 || trajectory >= 330) && trajectory != 0)
     {
         if(!weight)
         {
@@ -76,7 +76,7 @@ int area::calcNewProjectilePosition(int trajectory){
         }
         return northEast;
     }
-    else if(trajectory >= 60 && trajectory <= 120)
+    else if((trajectory >= 60 && trajectory <= 120) && trajectory != 90)
     {
         if(!weight)
         {
@@ -90,7 +90,7 @@ int area::calcNewProjectilePosition(int trajectory){
                 setWeight(2);
                 setChangeDirectionTo(northEast);
             }
-            else if(trajectory > 80)
+            else if(trajectory > 80 && trajectory < 90)
             {
                 setWeight(3);
                 setChangeDirectionTo(northEast);
@@ -128,7 +128,7 @@ int area::calcNewProjectilePosition(int trajectory){
         }
         return southEast;
     }
-    else if(trajectory >= 150 && trajectory <= 210)
+    else if((trajectory >= 150 && trajectory <= 210) && trajectory != 180)
     {
         if(!weight)
         {
@@ -142,7 +142,7 @@ int area::calcNewProjectilePosition(int trajectory){
                 setWeight(2);
                 setChangeDirectionTo(southEast);
             }
-            else if(trajectory > 170)
+            else if(trajectory > 170 && trajectory < 180)
             {
                 setWeight(3);
                 setChangeDirectionTo(southEast);
@@ -180,7 +180,7 @@ int area::calcNewProjectilePosition(int trajectory){
         }
         return southWest;
     }
-    else if(trajectory >= 240 && trajectory <= 300)
+    else if((trajectory >= 240 && trajectory <= 300) && trajectory != 270)
     {
         if(!weight)
         {
@@ -194,7 +194,7 @@ int area::calcNewProjectilePosition(int trajectory){
                 setWeight(2);
                 setChangeDirectionTo(southWest);
             }
-            else if(trajectory > 260)
+            else if(trajectory > 260 && trajectory < 270)
             {
                 setWeight(3);
                 setChangeDirectionTo(southWest);
@@ -232,6 +232,14 @@ int area::calcNewProjectilePosition(int trajectory){
         }
         return northWest;
     }
+    else if(trajectory == 0)
+        return north;
+    else if(trajectory == 90)
+        return east;
+    else if(trajectory == 180)
+        return south;
+    else
+        return west;
 }
 
 void area::setChangeDirectionTo(uint32_t value){
