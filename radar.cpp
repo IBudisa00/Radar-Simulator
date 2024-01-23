@@ -1,4 +1,6 @@
 #include "radar.hh"
+
+#define _USE_MATH_DEFINES
 #include <cmath>
 
 radar::radar(){
@@ -11,26 +13,15 @@ radar::radar(){
 }
 
 void radar::updateAngles(){
-    if(left_range_boundary + angleChange > 360)
-    {
-        left_range_boundary = left_range_boundary + angleChange - 360;
-        right_range_boundary = left_range_boundary + angle_range;
-    }
-    else if(left_range_boundary + angleChange == 360)
-    {
-        left_range_boundary = 0;
-        right_range_boundary = left_range_boundary + angle_range;
-    }
-    else
-    {
-        left_range_boundary = left_range_boundary + angleChange;
-        if(right_range_boundary + angle_range > 360)
-            right_range_boundary = angle_range - (360 - left_range_boundary);
-        else if(right_range_boundary + angle_range == 360)
-            right_range_boundary = 0;
-        else
-            right_range_boundary = left_range_boundary + angle_range;
-    }
+    int newLeftRange = (left_range_boundary + angleChange) % 360;
+    int newRightRange = (newLeftRange + angle_range) % 360;
+
+    if(newLeftRange < left_range_boundary)
+        transition = false;
+    left_range_boundary = newLeftRange;
+    if(newRightRange < right_range_boundary)
+        transition = true;
+    right_range_boundary = newRightRange;
 }
 
 bool radar::checkIfInRange(uint32_t x_cord, uint32_t y_cord){
@@ -41,8 +32,8 @@ bool radar::checkIfInRange(uint32_t x_cord, uint32_t y_cord){
 }
 
 bool radar::checkIfAngleSuits(uint32_t x_cord, uint32_t y_cord){
-    int adjacent;
-    int opposite;
+    double adjacent;
+    double opposite;
     double calc_angle;
 
     //quadrant2
@@ -50,35 +41,37 @@ bool radar::checkIfAngleSuits(uint32_t x_cord, uint32_t y_cord){
     {
         opposite = abs(x_cord-radar_x);
         adjacent = abs(y_cord-radar_y);
-        calc_angle = 270.0 + atan(opposite/adjacent);
+        calc_angle = 270.0 + atan(opposite/adjacent)*180/M_PI;
     }
     //quadrant1
     else if(radar_x > x_cord && radar_y < y_cord)
     {
         opposite = abs(x_cord-radar_x);
         adjacent = abs(y_cord-radar_y);
-        calc_angle = 90.0 - atan(opposite/adjacent);
+        calc_angle = 90.0 - atan(opposite/adjacent)*180/M_PI;
     }
     //quadrant4
     else if(radar_x < x_cord && radar_y < y_cord)
     {
         opposite = abs(x_cord-radar_x);
         adjacent = abs(y_cord-radar_y);
-        calc_angle = 90.0 + atan(opposite/adjacent);
+        calc_angle = 90.0 + atan(opposite/adjacent)*180/M_PI;
     }
     //quadrant3
     else if(radar_x < x_cord && radar_y > y_cord)
     {
         opposite = abs(x_cord-radar_x);
         adjacent = abs(y_cord-radar_y);
-        calc_angle = 270.0 - atan(opposite/adjacent);
+        calc_angle = 270.0 - atan(opposite/adjacent)*180/M_PI;
     }
     else if(radar_x == x_cord)
     {
         if(y_cord > radar_y)
             calc_angle = 90;
-        else
+        else if(y_cord < radar_y)
             calc_angle = 270;
+        else
+            return true;
     }
     else if(radar_y == y_cord)
     {
@@ -87,9 +80,6 @@ bool radar::checkIfAngleSuits(uint32_t x_cord, uint32_t y_cord){
         else
             calc_angle = 0;
     }
-    //right above radar
-    else
-        return true;
 
     if(transition)
     {
@@ -98,7 +88,11 @@ bool radar::checkIfAngleSuits(uint32_t x_cord, uint32_t y_cord){
             return false;
         }
         else
+        {
+            //std::cout <<" x_cord: "<<x_cord<<" y_cord: "<<y_cord<<" calc: "<<calc_angle;
             return true;
+        }
+            //return true;
     }
     else
     {
@@ -119,14 +113,25 @@ void radar::updateMap(area area[][AREA_SIZE]){
                 if(checkIfInRange(i,j))
                 {
                     if(area[i][j].getProjectilePresentValue())
-                        std::cout << GREEN << RED << " O " << RESET;
+                        std::cout << " O ";
+                        //std::cout << GREEN << RED << " O " << RESET;
+                    else if(area[i][j].getRadarLocation())
+                        std::cout << " R ";
                     else
-                        std::cout << GREEN << " | " << RESET;
+                        std::cout << " + ";
+                        //std::cout << GREEN << " | " << RESET;
                 }
+                else
+                    std::cout << " N ";
             }
             else
-                std::cout << " | ";
+                std::cout << " N ";
         }
         std::cout<<"\n";
     }
+}
+
+void radar::setRadarCoords(uint32_t x_cord, uint32_t y_cord){
+    radar_x = x_cord;
+    radar_y = y_cord;
 }

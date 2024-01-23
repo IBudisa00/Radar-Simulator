@@ -55,10 +55,6 @@ int area::calcNewProjectilePosition(int trajectory){
                 setChangeDirectionTo(northWest);
             }
         }
-        else if(weight == 1)
-        {
-
-        }
         return north;
     }
     else if(trajectory > 30 && trajectory < 60)
@@ -258,7 +254,12 @@ uint32_t area::getWeight(){
     return weight;
 }
 
-void area::updateArea(int weightValue, bool projectileValue){
+void area::updateArea(int weightValue, bool projectileValue, int newDirection){
     setWeight(weightValue);
     setProjectilePresent(projectileValue);
+    setChangeDirectionTo(newDirection);
+}
+
+bool area::getRadarLocation(){
+    return radarLocation;
 }

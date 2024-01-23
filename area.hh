@@ -33,5 +33,6 @@ class area{
         uint32_t getChangeDirectionTo();
         void setWeight(uint32_t value);
         uint32_t getWeight();
-        void updateArea(int weightValue, bool projectileValue);
+        void updateArea(int weightValue, bool projectileValue, int newDirection);
+        bool getRadarLocation();
 };

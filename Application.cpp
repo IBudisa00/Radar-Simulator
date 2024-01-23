@@ -8,6 +8,7 @@ void startSimulator(area area[][AREA_SIZE]);
 
 int main(){
     area area[AREA_SIZE][AREA_SIZE];
+    area[7][7].setRadarLocation();
 
     startSimulator(area);
 
@@ -21,19 +22,17 @@ void startSimulator(area area[][AREA_SIZE]){
     int coordinateX, coordinateY;
     int trajectory;
 
-    area[7][7].setRadarLocation();
+    radar.setRadarCoords(7,7);
 
     std::cout << "Welcome to radar simulation. Pick option you want to procede with.\n";
 
     while(running)
     {
-        std::cout <<" 1. Watch radar\n 2. Input object\n  3. Exit simulator\n";
+        std::cout << "1. Watch radar\n 2. Input object\n  3. Exit simulator\n";
         std::cin >> option;
         switch(option){
             case 1:
-                //printingScannedArray
                 printArea(area, radar, trajectory);
-                //running = 0;
                 break;
             case 2:
                 //inputObject
@@ -74,6 +73,7 @@ void printArea(area area[][AREA_SIZE], radar radar, int trajectory){
             }
         }
         n--;
+        std::cout <<"\n\n";
     }
 }
 
@@ -88,80 +88,80 @@ void updateProjectilePosition(area area[][AREA_SIZE], int x_cord, int y_cord, in
     {
         if(x_cord != 0)
         {
-            area[x_cord-1][y_cord].updateArea(area[x_cord][y_cord].getWeight() - 1, true);
-            area[x_cord][y_cord].updateArea(0, false); 
+            area[x_cord-1][y_cord].updateArea(area[x_cord][y_cord].getWeight() - 1, true, area[x_cord][y_cord].getChangeDirectionTo());
+            area[x_cord][y_cord].updateArea(0, false, noDirectionSet); 
         }
         else
-            area[x_cord][y_cord].updateArea(0, false); 
+            area[x_cord][y_cord].updateArea(0, false, noDirectionSet); 
     }
     else if(newPosition == northEast)
     {
         if(x_cord != 0 || y_cord != AREA_SIZE - 1)
         {
-            area[x_cord-1][y_cord+1].updateArea(area[x_cord][y_cord].getWeight() - 1, true);
-            area[x_cord][y_cord].updateArea(0, false);
+            area[x_cord-1][y_cord+1].updateArea(area[x_cord][y_cord].getWeight() - 1, true, area[x_cord][y_cord].getChangeDirectionTo());
+            area[x_cord][y_cord].updateArea(0, false, noDirectionSet);
         }
         else
-            area[x_cord][y_cord].updateArea(0, false);
+            area[x_cord][y_cord].updateArea(0, false, noDirectionSet);
     }
     else if(newPosition == east)
     {
         if(y_cord != AREA_SIZE - 1)
         {
-            area[x_cord][y_cord+1].updateArea(area[x_cord][y_cord].getWeight() - 1, true);
-            area[x_cord][y_cord].updateArea(0, false);
+            area[x_cord][y_cord+1].updateArea(area[x_cord][y_cord].getWeight() - 1, true, area[x_cord][y_cord].getChangeDirectionTo());
+            area[x_cord][y_cord].updateArea(0, false, noDirectionSet);
         }
         else
-            area[x_cord][y_cord].updateArea(0, false);
+            area[x_cord][y_cord].updateArea(0, false, noDirectionSet);
     }
     else if(newPosition == southEast)
     {
         if(x_cord != AREA_SIZE - 1 || y_cord != AREA_SIZE - 1)
         {
-            area[x_cord+1][y_cord+1].updateArea(area[x_cord][y_cord].getWeight() - 1, true);
-            area[x_cord][y_cord].updateArea(0, false);
+            area[x_cord+1][y_cord+1].updateArea(area[x_cord][y_cord].getWeight() - 1, true, area[x_cord][y_cord].getChangeDirectionTo());
+            area[x_cord][y_cord].updateArea(0, false, noDirectionSet);
         }
         else
-            area[x_cord][y_cord].updateArea(0, false);
+            area[x_cord][y_cord].updateArea(0, false, noDirectionSet);
     }
     else if(newPosition == south)
     {
         if(x_cord != AREA_SIZE - 1)
         {
-            area[x_cord+1][y_cord].updateArea(area[x_cord][y_cord].getWeight() - 1, true);
-            area[x_cord][y_cord].updateArea(0, false);
+            area[x_cord+1][y_cord].updateArea(area[x_cord][y_cord].getWeight() - 1, true, area[x_cord][y_cord].getChangeDirectionTo());
+            area[x_cord][y_cord].updateArea(0, false, noDirectionSet);
         }
         else
-            area[x_cord][y_cord].updateArea(0, false);
+            area[x_cord][y_cord].updateArea(0, false, noDirectionSet);
     }
     else if(newPosition == southWest)
     {
         if(x_cord != AREA_SIZE - 1 || y_cord != 0)
         {
-            area[x_cord+1][y_cord-1].updateArea(area[x_cord][y_cord].getWeight() - 1, true);
-            area[x_cord][y_cord].updateArea(0, false);
+            area[x_cord+1][y_cord-1].updateArea(area[x_cord][y_cord].getWeight() - 1, true, area[x_cord][y_cord].getChangeDirectionTo());
+            area[x_cord][y_cord].updateArea(0, false, noDirectionSet);
         }
         else
-            area[x_cord][y_cord].updateArea(0, false);
+            area[x_cord][y_cord].updateArea(0, false, noDirectionSet);
     }
     else if(newPosition == west)
     {
         if(y_cord != 0)
         {
-            area[x_cord][y_cord-1].updateArea(area[x_cord][y_cord].getWeight() - 1, true);
-            area[x_cord][y_cord].updateArea(0, false);
+            area[x_cord][y_cord-1].updateArea(area[x_cord][y_cord].getWeight() - 1, true, area[x_cord][y_cord].getChangeDirectionTo());
+            area[x_cord][y_cord].updateArea(0, false, noDirectionSet);
         }
         else
-            area[x_cord][y_cord].updateArea(0, false);
+            area[x_cord][y_cord].updateArea(0, false, noDirectionSet);
     }
     else
     {
         if(x_cord != 0 || y_cord != 0)
         {
-            area[x_cord-1][y_cord-1].updateArea(area[x_cord][y_cord].getWeight() - 1, true);
-            area[x_cord][y_cord].updateArea(0, false);
+            area[x_cord-1][y_cord-1].updateArea(area[x_cord][y_cord].getWeight() - 1, true, area[x_cord][y_cord].getChangeDirectionTo());
+            area[x_cord][y_cord].updateArea(0, false, noDirectionSet);
         }
         else
-            area[x_cord][y_cord].updateArea(0, false);
+            area[x_cord][y_cord].updateArea(0, false, noDirectionSet);
     }
 }
