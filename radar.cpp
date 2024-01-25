@@ -24,14 +24,14 @@ void radar::updateAngles(){
     right_range_boundary = newRightRange;
 }
 
-bool radar::checkIfInRange(uint32_t x_cord, uint32_t y_cord){
+bool radar::checkIfInRange(int x_cord, int y_cord){
     if(sqrt(pow(abs(x_cord-radar_x), 2) + pow(abs(y_cord-radar_y), 2)) <= range_radius)
         return true;
     else
         return false;
 }
 
-bool radar::checkIfAngleSuits(uint32_t x_cord, uint32_t y_cord){
+bool radar::checkIfAngleSuits(int x_cord, int y_cord){
     double adjacent;
     double opposite;
     double calc_angle;
@@ -88,11 +88,7 @@ bool radar::checkIfAngleSuits(uint32_t x_cord, uint32_t y_cord){
             return false;
         }
         else
-        {
-            //std::cout <<" x_cord: "<<x_cord<<" y_cord: "<<y_cord<<" calc: "<<calc_angle;
             return true;
-        }
-            //return true;
     }
     else
     {
@@ -113,25 +109,23 @@ void radar::updateMap(area area[][AREA_SIZE]){
                 if(checkIfInRange(i,j))
                 {
                     if(area[i][j].getProjectilePresentValue())
-                        std::cout << " O ";
-                        //std::cout << GREEN << RED << " O " << RESET;
+                        std::cout << RED << " O " << RESET;
                     else if(area[i][j].getRadarLocation())
-                        std::cout << " R ";
+                        std::cout << GREEN << " R " << RESET;
                     else
-                        std::cout << " + ";
-                        //std::cout << GREEN << " | " << RESET;
+                        std::cout << GREEN << " + " << RESET;
                 }
                 else
-                    std::cout << " N ";
+                    std::cout << " + ";
             }
             else
-                std::cout << " N ";
+                std::cout << " + ";
         }
         std::cout<<"\n";
     }
 }
 
-void radar::setRadarCoords(uint32_t x_cord, uint32_t y_cord){
+void radar::setRadarCoords(int x_cord, int y_cord){
     radar_x = x_cord;
     radar_y = y_cord;
 }

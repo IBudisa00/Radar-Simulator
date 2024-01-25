@@ -34,7 +34,7 @@ int area::calcNewProjectilePosition(int trajectory){
                 setWeight(2);
                 setChangeDirectionTo(northEast);
             }
-            else if(trajectory > 20)
+            else if(trajectory > 20 && trajectory < 340)
             {
                 setWeight(1);
                 setChangeDirectionTo(northEast);
