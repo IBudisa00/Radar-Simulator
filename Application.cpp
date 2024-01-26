@@ -3,12 +3,12 @@
 #include "radar.hh"
 
 void updateProjectilePosition(area area[][AREA_SIZE], int x_cord, int y_cord, int trajectory);
-void printArea(area area[][AREA_SIZE], radar radar, int trajectory);
+void printArea(area area[][AREA_SIZE], radar *radar, int trajectory);
 void startSimulator(area area[][AREA_SIZE]);
 
 int main(){
     area area[AREA_SIZE][AREA_SIZE];
-    area[7][7].setRadarLocation();
+    area[15][15].setRadarLocation();
 
     startSimulator(area);
 
@@ -22,7 +22,7 @@ void startSimulator(area area[][AREA_SIZE]){
     int coordinateX, coordinateY;
     int trajectory;
 
-    radar.setRadarCoords(7,7);
+    radar.setRadarCoords(15,15);
 
     std::cout << "Welcome to radar simulation. Pick option you want to procede with.\n";
 
@@ -32,10 +32,9 @@ void startSimulator(area area[][AREA_SIZE]){
         std::cin >> option;
         switch(option){
             case 1:
-                printArea(area, radar, trajectory);
+                printArea(area, &radar, trajectory);
                 break;
             case 2:
-                //inputObject
                 std::cout << "Coordinates must be in range [0-15]. Angle of trajectory must be in range [0-360]. Angle is in relation to azimuth." << std::endl;
                 std::cout << "Enter X coordinate: ";
                 std::cin >> coordinateX;
@@ -43,6 +42,7 @@ void startSimulator(area area[][AREA_SIZE]){
                 std::cin >> coordinateY;
                 std::cout << "\nEnter angle of trajectory: ";
                 std::cin >> trajectory;
+                trajectory = trajectory % 360;
 
                 area[coordinateX][coordinateY].setProjectilePresent(true);
                 break;
@@ -56,12 +56,12 @@ void startSimulator(area area[][AREA_SIZE]){
     }
 }
 
-void printArea(area area[][AREA_SIZE], radar radar, int trajectory){
+void printArea(area area[][AREA_SIZE], radar *radar, int trajectory){
     int n = 15;
     while(n)
     {
-        radar.updateMap(area);
-        radar.updateAngles();
+        radar->updateMap(area);
+        radar->updateAngles();
 
         for(uint32_t i = 0; i < AREA_SIZE; i++){
             for(uint32_t j = 0; j < AREA_SIZE; j++){

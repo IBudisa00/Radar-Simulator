@@ -5,7 +5,7 @@
 
 radar::radar(){
     angle_range = 120;
-    range_radius = 5;
+    range_radius = 12;
     left_range_boundary = 300;
     right_range_boundary = 60;
     angleChange = 30;

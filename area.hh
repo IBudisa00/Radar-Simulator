@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <cstdint>
-#define AREA_SIZE 15
+#define AREA_SIZE 30
 
 enum nextProjectilePosition{
     noDirectionSet,
